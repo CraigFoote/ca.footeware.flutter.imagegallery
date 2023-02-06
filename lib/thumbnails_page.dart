@@ -3,6 +3,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:image_gallery/slideshow_page.dart';
 
 import 'image_page.dart';
 
@@ -16,11 +17,27 @@ class ThumbnailsPage extends StatefulWidget {
 }
 
 class ThumbnailsPageState extends State<ThumbnailsPage> {
+  Map<String, Image> nameImageMap = {};
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.galleryName),
+        actions: [
+          IconButton(
+            onPressed: () => Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => SlideshowPage(
+                  gallery: widget.galleryName,
+                  filenames: nameImageMap.keys,
+                ),
+              ),
+            ),
+            icon: const Icon(Icons.slideshow),
+            tooltip: "Slideshow",
+          ),
+        ],
       ),
       body: LayoutBuilder(
         builder: (context, constraints) {
@@ -30,25 +47,25 @@ class ThumbnailsPageState extends State<ThumbnailsPage> {
               if (!snapshot.hasData) {
                 return const Center(child: CircularProgressIndicator());
               } else {
-                Map<String, Image> map = snapshot.data;
+                nameImageMap = snapshot.data;
                 return GridView.builder(
-                  itemCount: map.length,
+                  itemCount: nameImageMap.length,
                   shrinkWrap: true,
                   padding: EdgeInsets.zero,
                   itemBuilder: (BuildContext context, int index) {
                     return GestureDetector(
                       child: Hero(
-                        tag: map.keys.elementAt(index),
-                        child: map.values.elementAt(index),
+                        tag: nameImageMap.keys.elementAt(index),
+                        child: nameImageMap.values.elementAt(index),
                       ),
                       onTap: () => Navigator.of(context).push(
                         MaterialPageRoute(
                           builder: (context) => ImagePage(
-                            gallery: widget.galleryName,
-                            filename: map.keys.elementAt(index),
+                                gallery: widget.galleryName,
+                            filename: nameImageMap.keys.elementAt(index),
                           ),
-                        ),
-                      ),
+                            ),
+                          ),
                     );
                   },
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(

@@ -10,9 +10,6 @@ class ImagePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(filename),
-      ),
       body: GestureDetector(
         child: Center(
           child: Hero(
@@ -22,7 +19,6 @@ class ImagePage extends StatelessWidget {
                 'http://footeware.ca:8000/galleries/$gallery/$filename',
               ),
               minScale: 0.1,
-              backgroundDecoration: const BoxDecoration(color: Colors.white),
             ),
           ),
         ),
