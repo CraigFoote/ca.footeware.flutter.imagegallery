@@ -26,17 +26,14 @@ class ThumbnailsPageState extends State<ThumbnailsPage> {
         title: Text(widget.galleryName),
         actions: [
           IconButton(
-            onPressed: () => Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => SlideshowPage(
-                  gallery: widget.galleryName,
-                  filenames: nameImageMap.keys,
-                ),
+              style: const ButtonStyle(
+                backgroundColor:
+                    MaterialStatePropertyAll<Color>(Colors.blueGrey),
               ),
-            ),
-            icon: const Icon(Icons.slideshow),
-            tooltip: "Slideshow",
-          ),
+              icon: const Icon(Icons.play_arrow, size: 30.0),
+              alignment: Alignment.centerLeft,
+              tooltip: 'Slideshow',
+              onPressed: () => startSlideshow()),
         ],
       ),
       body: LayoutBuilder(
@@ -61,11 +58,11 @@ class ThumbnailsPageState extends State<ThumbnailsPage> {
                       onTap: () => Navigator.of(context).push(
                         MaterialPageRoute(
                           builder: (context) => ImagePage(
-                                gallery: widget.galleryName,
+                            gallery: widget.galleryName,
                             filename: nameImageMap.keys.elementAt(index),
                           ),
-                            ),
-                          ),
+                        ),
+                      ),
                     );
                   },
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -96,5 +93,18 @@ class ThumbnailsPageState extends State<ThumbnailsPage> {
       thumbs[filename] = image;
     }
     return thumbs;
+  }
+
+  startSlideshow() {
+    if (nameImageMap.isNotEmpty) {
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => SlideshowPage(
+            gallery: widget.galleryName,
+            filenames: nameImageMap.keys,
+          ),
+        ),
+      );
+    }
   }
 }

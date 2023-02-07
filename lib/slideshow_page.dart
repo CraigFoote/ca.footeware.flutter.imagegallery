@@ -11,10 +11,11 @@ class SlideshowPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onLongPress: () => Navigator.pop(context),
+      onTap: () => Navigator.pop(context),
       child: Builder(
         builder: (context) {
           return ImageSlideshow(
+            indicatorRadius: 2.5,
             indicatorColor: Colors.blue,
             autoPlayInterval: 5000,
             isLoop: true,

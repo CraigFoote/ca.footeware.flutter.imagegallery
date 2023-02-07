@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:image_gallery/info_page.dart';
 
 import 'thumbnails_page.dart';
 
@@ -44,6 +45,20 @@ class _GalleryListPageState extends State<GalleryListPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
+        actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const InfoPage(title: 'Info'),
+                ),
+              );
+            },
+            icon: const Icon(Icons.info_outline),
+            tooltip: 'Info',
+          ),
+        ],
       ),
       body: FutureBuilder(
         future: _fetchGalleries(),
@@ -57,14 +72,20 @@ class _GalleryListPageState extends State<GalleryListPage> {
               itemCount: map.length,
               itemBuilder: (BuildContext context, int index) {
                 return Card(
+                  color: Colors.white30,
                   elevation: 5.0,
                   child: ListTile(
-                    trailing: map.values.elementAt(index)
-                        ? const Icon(Icons.lock_outline)
-                        : const Icon(Icons.lock_open),
                     title:
                         Text(map.keys.elementAt(index), textScaleFactor: 2.0),
-                    tileColor: Colors.black12,
+                    trailing: map.values.elementAt(index)
+                        ? const Icon(
+                            Icons.lock_outline,
+                            color: Colors.red,
+                          )
+                        : const Icon(
+                            Icons.lock_open,
+                            color: Colors.green,
+                          ),
                     contentPadding: const EdgeInsets.all(10.0),
                     onTap: () => {
                       Navigator.push(
