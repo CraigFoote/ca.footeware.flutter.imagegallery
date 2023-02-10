@@ -11,10 +11,23 @@ void main() {
   runApp(const ImageGallery());
 }
 
-class ImageGallery extends StatelessWidget {
+class ImageGallery extends StatefulWidget {
   const ImageGallery({super.key});
 
+  @override
+  State<StatefulWidget> createState() => _ImageGalleryState();
+}
+
+class _ImageGalleryState extends State<ImageGallery> {
   static const title = "Image Gallery";
+  late ThemeMode themeMode = ThemeMode.dark;
+
+  toggleThemeMode() {
+    setState(() {
+      themeMode =
+          (themeMode == ThemeMode.light) ? ThemeMode.dark : ThemeMode.light;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,17 +41,19 @@ class ImageGallery extends StatelessWidget {
         darkTheme: ThemeData.dark(
           useMaterial3: true,
         ),
-        themeMode: ThemeMode.dark,
-        home: const GalleryListPage(title: title),
+        themeMode: themeMode,
+        home: GalleryListPage(title: title, themeModeCallBack: toggleThemeMode),
       );
     });
   }
 }
 
 class GalleryListPage extends StatefulWidget {
-  const GalleryListPage({super.key, required this.title});
+  const GalleryListPage(
+      {super.key, required this.title, required this.themeModeCallBack});
 
   final String title;
+  final Function() themeModeCallBack;
 
   @override
   State<GalleryListPage> createState() => _GalleryListPageState();
@@ -61,6 +76,14 @@ class _GalleryListPageState extends State<GalleryListPage> {
       appBar: AppBar(
         title: Text(widget.title),
         actions: [
+          IconButton(
+            onPressed: () {
+              setState(() {
+                widget.themeModeCallBack();
+              });
+            },
+            icon: const Icon(Icons.invert_colors),
+          ),
           IconButton(
             onPressed: () {
               Navigator.push(
