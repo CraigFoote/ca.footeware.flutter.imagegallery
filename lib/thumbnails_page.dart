@@ -25,15 +25,15 @@ class ThumbnailsPageState extends State<ThumbnailsPage> {
       appBar: AppBar(
         title: Text(widget.galleryName),
         actions: [
-          IconButton(
-              style: const ButtonStyle(
-                backgroundColor:
-                    MaterialStatePropertyAll<Color>(Colors.blueGrey),
-              ),
-              icon: const Icon(Icons.play_arrow, size: 30.0),
-              alignment: Alignment.centerLeft,
-              tooltip: 'Slideshow',
-              onPressed: () => startSlideshow()),
+          FilledButton.tonal(
+            onPressed: () => startSlideshow(),
+            child: Row(
+              children: const [
+                Text('Slideshow'),
+                Icon(Icons.play_arrow),
+              ],
+            ),
+          ),
         ],
       ),
       body: LayoutBuilder(

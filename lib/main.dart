@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_gallery/info_page.dart';
@@ -13,18 +14,24 @@ void main() {
 class ImageGallery extends StatelessWidget {
   const ImageGallery({super.key});
 
-  static const title = "Gallery";
+  static const title = "Image Gallery";
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: title,
-      theme: ThemeData(
-        primarySwatch: Colors.grey,
-      ),
-      home: const GalleryListPage(title: title),
-    );
+    return DynamicColorBuilder(builder: (lightColorScheme, darkColorScheme) {
+      return MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: title,
+        theme: ThemeData.light(
+          useMaterial3: true,
+        ),
+        darkTheme: ThemeData.dark(
+          useMaterial3: true,
+        ),
+        themeMode: ThemeMode.dark,
+        home: const GalleryListPage(title: title),
+      );
+    });
   }
 }
 
@@ -39,6 +46,14 @@ class GalleryListPage extends StatefulWidget {
 
 class _GalleryListPageState extends State<GalleryListPage> {
   late final List<String> base64s;
+  final textController = TextEditingController();
+  bool authenticated = false;
+
+  @override
+  void dispose() {
+    textController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -72,31 +87,51 @@ class _GalleryListPageState extends State<GalleryListPage> {
               itemCount: map.length,
               itemBuilder: (BuildContext context, int index) {
                 return Card(
-                  color: Colors.white30,
                   elevation: 5.0,
                   child: ListTile(
                     title:
-                        Text(map.keys.elementAt(index), textScaleFactor: 2.0),
-                    trailing: map.values.elementAt(index)
+                        Text(map.keys.elementAt(index), textScaleFactor: 1.5),
+                    trailing: map.values.elementAt(index) && !authenticated
                         ? const Icon(
                             Icons.lock_outline,
                             color: Colors.red,
                           )
                         : const Icon(
                             Icons.lock_open,
-                            color: Colors.green,
                           ),
                     contentPadding: const EdgeInsets.all(10.0),
-                    onTap: () => {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => ThumbnailsPage(
-                            galleryName: map.keys.elementAt(index),
+                    onTap: () => map.values.elementAt(index) && !authenticated
+                        ? showDialog<void>(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                content: TextField(
+                                  autofocus: true,
+                                  controller: textController,
+                                  maxLength: 5,
+                                  obscureText: true,
+                                  decoration: const InputDecoration(
+                                    border: UnderlineInputBorder(),
+                                    labelText: "Password",
+                                  ),
+                                  onSubmitted: (value) {
+                                    if (value == 'bogie') {
+                                      Navigator.pop(context);
+                                      setState(() => authenticated = true);
+                                    }
+                                  },
+                                ),
+                              );
+                            },
+                          )
+                        : Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ThumbnailsPage(
+                                galleryName: map.keys.elementAt(index),
+                              ),
+                            ),
                           ),
-                        ),
-                      ),
-                    },
                   ),
                 );
               },
@@ -114,8 +149,8 @@ class _GalleryListPageState extends State<GalleryListPage> {
     final List json = jsonDecode(response.body);
     for (var element in json) {
       String? name = element['name'];
-      bool locked = element['secret'];
-      galleries[name!] = locked;
+      bool secret = element['secret'];
+      galleries[name!] = secret;
     }
     return galleries;
   }

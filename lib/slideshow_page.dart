@@ -17,7 +17,7 @@ class SlideshowPage extends StatelessWidget {
           return ImageSlideshow(
             indicatorRadius: 2.5,
             indicatorColor: Colors.blue,
-            autoPlayInterval: 5000,
+            autoPlayInterval: 10000,
             isLoop: true,
             children: [for (String filename in filenames) getImage(filename)],
           );
