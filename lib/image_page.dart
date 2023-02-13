@@ -22,7 +22,7 @@ class ImagePage extends StatelessWidget {
             ),
           ),
         ),
-        onTap: () {
+        onVerticalDragStart: (details) {
           Navigator.pop(context);
         },
       ),
