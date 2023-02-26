@@ -33,12 +33,14 @@ class _ImageGalleryState extends State<ImageGallery> {
   Widget build(BuildContext context) {
     return DynamicColorBuilder(builder: (lightColorScheme, darkColorScheme) {
       return MaterialApp(
-        debugShowCheckedModeBanner: false,
         title: title,
-        theme: ThemeData.light(
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          colorScheme: lightColorScheme,
           useMaterial3: true,
         ),
-        darkTheme: ThemeData.dark(
+        darkTheme: ThemeData(
+          colorScheme: darkColorScheme,
           useMaterial3: true,
         ),
         themeMode: themeMode,
