@@ -13,7 +13,6 @@ void main() {
 
 class ImageGallery extends StatefulWidget {
   const ImageGallery({super.key});
-
   @override
   State<StatefulWidget> createState() => _ImageGalleryState();
 }
@@ -44,24 +43,24 @@ class _ImageGalleryState extends State<ImageGallery> {
           useMaterial3: true,
         ),
         themeMode: themeMode,
-        home: GalleryListPage(title: title, themeModeCallBack: toggleThemeMode),
+        home: _GalleryListPage(title: title, themeModeCallBack: toggleThemeMode),
       );
     });
   }
 }
 
-class GalleryListPage extends StatefulWidget {
-  const GalleryListPage(
-      {super.key, required this.title, required this.themeModeCallBack});
+class _GalleryListPage extends StatefulWidget {
+  const _GalleryListPage(
+      {required this.title, required this.themeModeCallBack});
 
   final String title;
   final Function() themeModeCallBack;
 
   @override
-  State<GalleryListPage> createState() => _GalleryListPageState();
+  State<_GalleryListPage> createState() => _GalleryListPageState();
 }
 
-class _GalleryListPageState extends State<GalleryListPage> {
+class _GalleryListPageState extends State<_GalleryListPage> {
   late final List<String> base64s;
   final textController = TextEditingController();
   bool authenticated = false;
@@ -140,7 +139,7 @@ class _GalleryListPageState extends State<GalleryListPage> {
                                     labelText: "Password",
                                   ),
                                   onSubmitted: (value) {
-                                    if (value == 'bogie') {
+                                    if (value == 'bogie97') {
                                       Navigator.pop(context);
                                       setState(() => authenticated = true);
                                     }

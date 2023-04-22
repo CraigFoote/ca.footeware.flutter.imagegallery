@@ -19,14 +19,14 @@ class SlideshowPage extends StatelessWidget {
             indicatorColor: Colors.blue,
             autoPlayInterval: 10000,
             isLoop: true,
-            children: [for (String filename in filenames) getImage(filename)],
+            children: [for (String filename in filenames) _getImage(filename)],
           );
         },
       ),
     );
   }
 
-  getImage(String filename) {
+  _getImage(String filename) {
     return Image.network(
         'http://footeware.ca:8000/galleries/$gallery/$filename',
         fit: BoxFit.contain, loadingBuilder: (BuildContext context,

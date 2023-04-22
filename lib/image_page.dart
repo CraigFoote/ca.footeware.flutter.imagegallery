@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:photo_view/photo_view.dart';
+import 'package:simple_gesture_detector/simple_gesture_detector.dart';
 
 class ImagePage extends StatelessWidget {
   const ImagePage({super.key, required this.gallery, required this.filename});
@@ -10,21 +10,14 @@ class ImagePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: GestureDetector(
+      body: SimpleGestureDetector(
         child: Center(
           child: Hero(
             tag: filename,
-            child: PhotoView(
-              imageProvider: NetworkImage(
-                'http://footeware.ca:8000/galleries/$gallery/$filename',
-              ),
-              minScale: 0.1,
+            child:  Image.network('http://footeware.ca:8000/galleries/$gallery/$filename'),
             ),
           ),
-        ),
-        onTap: () {
-          Navigator.pop(context);
-        },
+        onVerticalSwipe: (swipeDirection) => Navigator.pop(context),
       ),
     );
   }
