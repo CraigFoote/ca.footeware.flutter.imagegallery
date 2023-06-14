@@ -139,7 +139,7 @@ class _GalleryListPageState extends State<_GalleryListPage> {
                                     labelText: "Password",
                                   ),
                                   onSubmitted: (value) {
-                                    if (value == 'bogie97') {
+                                    if (value == 'bogie') {
                                       Navigator.pop(context);
                                       setState(() => authenticated = true);
                                     }

@@ -27,8 +27,8 @@ class ThumbnailsPageState extends State<ThumbnailsPage> {
         actions: [
           FilledButton.tonal(
             onPressed: () => startSlideshow(),
-            child: Row(
-              children: const [
+            child: const Row(
+              children: [
                 Text('Slideshow'),
                 Icon(Icons.play_arrow),
               ],

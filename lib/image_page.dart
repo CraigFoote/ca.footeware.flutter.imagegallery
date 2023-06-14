@@ -14,9 +14,10 @@ class ImagePage extends StatelessWidget {
         child: Center(
           child: Hero(
             tag: filename,
-            child:  Image.network('http://footeware.ca:8000/galleries/$gallery/$filename'),
-            ),
+            child: Image.network(
+                'http://footeware.ca:8000/galleries/$gallery/$filename'),
           ),
+        ),
         onVerticalSwipe: (swipeDirection) => Navigator.pop(context),
       ),
     );
